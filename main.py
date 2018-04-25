@@ -36,8 +36,7 @@ def trier(liste):  # Algorithme de tri afin d'avoir les notes de la gamme trié 
     return gamme
 
 
-
-def detectRepartition(): #Detecte la différence entre la plus haute note et la plus basse note
+def detectRepartition():  # Detecte la différence entre la plus haute note et la plus basse note
     basse = int(notes[0])
     haute = int(notes[0])
     for n in notes:
@@ -46,7 +45,7 @@ def detectRepartition(): #Detecte la différence entre la plus haute note et la 
         elif int(n) < basse:
             basse = int(n)
     print("Note haute :", haute, " et note basse : ", basse)
-    return haute-basse
+    return haute - basse
 
 
 def detectGamme():  # Algorithme de détection de gamme basé sur les probabilitées.
@@ -107,9 +106,9 @@ def detectGamme():  # Algorithme de détection de gamme basé sur les probabilit
     freqLa = round((comptla / notesTotales) * 100)
     freqLad = round((comptlad / notesTotales) * 100)
     freqSi = round((comptsi / notesTotales) * 100)
-    print("DO : ", freqDo, " DO# :", freqDod, " RE :", freqRe, " RE# :", freqRed, " MI :", freqMi, " FA :",
-          freqFa, " FA# :", freqFad, " SOL :", freqSol, " SOL# :", freqSold, " LA :", freqLa, " LA# :", freqLad,
-          " SI :", freqSi)
+    print("DO : ", freqDo, "% DO# :", freqDod, "% RE :", freqRe, "% RE# :", freqRed, "% MI :", freqMi, "% FA :",
+          freqFa, "% FA# :", freqFad, "% SOL :", freqSol, "% SOL# :", freqSold, "% LA :", freqLa, "% LA# :", freqLad,
+          "% SI :", freqSi)
     if freqDo >= 10:
         gamme.append("Do")
     if freqDod >= 10:
@@ -192,6 +191,35 @@ def detectGamme():  # Algorithme de détection de gamme basé sur les probabilit
             gamme.insert(7, "Si")
     liste = trier(gamme)
     print(liste)
+    # Comparaison afin d'avoir le taux de notes différentes de la gamme
+    # On compare donc toutes les notes avec les notes de la liste (gamme)
+    freqDissonnance = 0
+    if "Do" not in liste:
+        freqDissonnance += freqDo
+    if "Do#" not in liste:
+        freqDissonnance += freqDod
+    if "Re" not in liste:
+        freqDissonnance += freqRe
+    if "Re#" not in liste:
+        freqDissonnance += freqRed
+    if "Mi" not in liste:
+        freqDissonnance += freqMi
+    if "Fa" not in liste:
+        freqDissonnance += freqFa
+    if "Fa#" not in liste:
+        freqDissonnance += freqFad
+    if "Sol" not in liste:
+        freqDissonnance += freqSol
+    if "Sol#" not in liste:
+        freqDissonnance += freqSold
+    if "La" not in liste:
+        freqDissonnance += freqLa
+    if "La#" not in liste:
+        freqDissonnance += freqLad
+    if "Si" not in liste:
+        freqDissonnance += freqSi
+    print ("Fréquence dissonnance : ", freqDissonnance, "%")
+    #On détermine alors le nom exact de la gamme
     gamme = "Rien"
     if "Do" in liste and "Re" in liste and "Mi" in liste and "Fa" in liste and "Sol" in liste and "La" in liste and "Si" in liste:
         if freqDo > freqLa:
@@ -379,8 +407,9 @@ easyMIDI.writeMIDI("output.mid")
 # creation de gammes
 # g = Gamme()
 
-
-mid = MidiFile('lettreaelise.mid')
+morceau = "marcheturque.mid"
+print("Morceau actuel : " , morceau)
+mid = MidiFile(morceau)
 
 notes = []
 for i, track in enumerate(mid.tracks):
