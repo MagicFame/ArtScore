@@ -4,7 +4,7 @@ Points à avancer :
 
 - Analyse : 
     - Gamme : Fait
-    - Répartition (plus haute note - plus basse note)
+    - Répartition (plus haute note - plus basse note) : Fait
     - Pourcentage dissonances (notes différentes gamme)
     - Rythmique 
     - Parties qui se répètent (Organisation du morceau)
