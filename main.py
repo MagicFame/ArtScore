@@ -36,6 +36,19 @@ def trier(liste):  # Algorithme de tri afin d'avoir les notes de la gamme trié 
     return gamme
 
 
+
+def detectRepartition(): #Detecte la différence entre la plus haute note et la plus basse note
+    basse = int(notes[0])
+    haute = int(notes[0])
+    for n in notes:
+        if int(n) > haute:
+            haute = int(n)
+        elif int(n) < basse:
+            basse = int(n)
+    print("Note haute :", haute, " et note basse : ", basse)
+    return haute-basse
+
+
 def detectGamme():  # Algorithme de détection de gamme basé sur les probabilitées.
     gamme = []
     comptdo = 0
@@ -289,6 +302,7 @@ def detectGamme():  # Algorithme de détection de gamme basé sur les probabilit
         else:
             gamme = "Sol# majeur"
     print("La gamme est :", gamme)
+    return gamme
 
 
 def initialisation():  # definir les différentes notes du piano (4 octaves)
@@ -383,8 +397,8 @@ for i, track in enumerate(mid.tracks):
 # for i in notes:
 #   print(i)
 
-detectGamme()
-
+gamme = detectGamme()
+print("La différence entre la note la plus haute et la plus basse est :", detectRepartition())
 from mido import Message, MidiFile, MidiTrack
 
 mid = MidiFile()
