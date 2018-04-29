@@ -5,6 +5,8 @@ from mido import MidiFile
 import Gamme
 from math import *
 
+from Genre import Genre
+
 
 def trier(liste):  # Algorithme de tri afin d'avoir les notes de la gamme trié par ordre de Do à Si
     gamme = []
@@ -45,6 +47,7 @@ def detectRepartition():  # Detecte la différence entre la plus haute note et l
         elif int(n) < basse:
             basse = int(n)
     print("Note haute :", haute, " et note basse : ", basse)
+    classique.addRepartition(haute - basse)
     return haute - basse
 
 
@@ -218,8 +221,9 @@ def detectGamme():  # Algorithme de détection de gamme basé sur les probabilit
         freqDissonnance += freqLad
     if "Si" not in liste:
         freqDissonnance += freqSi
-    print ("Fréquence dissonnance : ", freqDissonnance, "%")
-    #On détermine alors le nom exact de la gamme
+    print("Fréquence dissonnance : ", freqDissonnance, "%")
+    classique.addDissonance(freqDissonnance)
+    # On détermine alors le nom exact de la gamme
     gamme = "Rien"
     if "Do" in liste and "Re" in liste and "Mi" in liste and "Fa" in liste and "Sol" in liste and "La" in liste and "Si" in liste:
         if freqDo > freqLa:
@@ -330,6 +334,7 @@ def detectGamme():  # Algorithme de détection de gamme basé sur les probabilit
         else:
             gamme = "Sol# majeur"
     print("La gamme est :", gamme)
+    classique.addGamme(gamme)
     return gamme
 
 
@@ -406,30 +411,40 @@ easyMIDI.writeMIDI("output.mid")
 
 # creation de gammes
 # g = Gamme()
+compt = 0
 
-morceau = "marcheturque.mid"
-print("Morceau actuel : " , morceau)
-mid = MidiFile(morceau)
+classique = Genre("Classique")
+for compt in range(1, 360):
 
-notes = []
-for i, track in enumerate(mid.tracks):
+    morceau = "n (" + str(compt) + ").mid"
+    path = "Classique/" + morceau
+    print("Morceau actuel :", path)
+    mid = MidiFile(path)
 
-    print('Track {}: {}'.format(i, track.name))
-    for msg in track:
-        if msg.type == 'note_on':
-            a, b, c, d, e = str(msg).split(" ")
-            g, note = str(c).split("=")
-            notes.append(note)
+    notes = []
+    for i, track in enumerate(mid.tracks):
 
-# REGARDER LA DOC : https://mido.readthedocs.io/en/latest/index.html#
+        print('Track {}: {}'.format(i, track.name))
+        for msg in track:
+            if msg.type == 'note_on':
+                a, b, c, d, e = str(msg).split(" ")
+                g, note = str(c).split("=")
+                notes.append(note)
 
-# for i in notes:
-#   print(i)
+    # REGARDER LA DOC : https://mido.readthedocs.io/en/latest/index.html#
 
-gamme = detectGamme()
-print("La différence entre la note la plus haute et la plus basse est :", detectRepartition())
+    # for i in notes:
+    #   print(i)
+
+    gamme = detectGamme()
+    print("La différence entre la note la plus haute et la plus basse est :", detectRepartition())
+
+classique.afficherInfoGenre()
+
+# GENERATION DE MORCEAU AVEC TECHNIQUE RANDOM EN RESPECTANT LES CARACTERISTIQUES
 from mido import Message, MidiFile, MidiTrack
-
+from random import randrange
+nombreAleatoire = randrange(1,1000)
 mid = MidiFile()
 track = MidiTrack()
 mid.tracks.append(track)
