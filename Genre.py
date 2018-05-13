@@ -89,18 +89,48 @@ class Genre:  # def
         self.repartitionTotale += value
 
     def afficherInfoGenre(self):
-        print("Style selectionné : Classique")
+        print("\n \n \n \nStyle selectionné : Classique")
         print("Gamme répartition Do majeur : ", self.repartitionDoMajeur, "Do mineur : ", self.repartitionDoMineur,
               "La mineur: ", self.repartitionLaMineur, "Sol majeur: ", self.repartitionSolMajeur, "Mi mineur:",
               self.repartitionMiMineur, "Re majeur : ", self.repartitionReMajeur, "Si mineur", self.repartitionSiMineur,
               "La majeur : ", self.repartitionLaMajeur, "Fa# mineur: ", self.repartitionFaDMineur,
               "Mi majeur: ", self.repartitionMiMajeur, "Do# mineur:", self.repartitionDoDMineur, "Si majeur : ",
               self.repartitionSiMajeur, "Sol# mineur", self.repartitionSolDMineur, "Fa# majeur : ",
-              self.repartitionFaDMajeur, "Re# mineur : ", self.repartitionReDMineur, "Do# majeur: ",
+              self.repartitionFaDMajeur, "\nRe# mineur  : ", self.repartitionReDMineur, "Do# majeur: ",
               self.repartitionDoDMajeur,
               "La# mineur: ", self.repartitionLaDMineur, "Fa majeur:", self.repartitionFaMajeur, "Re mineur : ",
               self.repartitionReMineur, "La# majeur", self.repartitionLaDMajeur,
               "Sol mineur : ", self.repartitionSolMineur, "Re# majeur", self.repartitionReDMajeur, "Sol# majeur",
               self.repartitionSolDMajeur, "Fa mineur", self.repartitionFaMineur)
-        print("Dissonnance moyenne :", self.dissonnaceTotale / 360)
-        print("Repartition moyenne", self.repartitionTotale / 360)
+        print("\nDissonnance moyenne :", self.dissonnaceTotale / 360)
+        print("\nRepartition moyenne", self.repartitionTotale / 360)
+
+    def chooseGenre(self):  # A adapter par rapport aux pourcentages
+        total = self.repartitionDoMajeur + self.repartitionDoMineur + self.repartitionLaMineur + \
+                self.repartitionSolMajeur + self.repartitionMiMineur + self.repartitionReMajeur + \
+                self.repartitionSiMineur + self.repartitionLaMajeur + self.repartitionFaDMineur + \
+                self.repartitionMiMajeur + self.repartitionDoDMineur + self.repartitionSiMajeur + \
+                self.repartitionSolDMineur + self.repartitionFaDMajeur + self.repartitionReDMineur + \
+                self.repartitionDoDMajeur + self.repartitionLaDMineur + self.repartitionFaMajeur + \
+                self.repartitionReMineur + self.repartitionLaDMajeur + self.repartitionSolMineur + \
+                self.repartitionReDMajeur + self.repartitionSolDMajeur + self.repartitionFaMineur
+        from random import randrange
+        nombreAleatoire = randrange(1, 7)
+        if nombreAleatoire == 1:
+            return "Do majeur"
+        if nombreAleatoire == 2:
+            return "Sol majeur"
+        if nombreAleatoire == 3:
+            return "Re majeur"
+        if nombreAleatoire == 4:
+            return "Fa majeur"
+        if nombreAleatoire == 5:
+            return "La# majeur"
+        if nombreAleatoire == 6:
+            return "Re# majeur"
+
+    def repartitionMoyenne(self):
+        return self.dissonnaceTotale / 360
+
+    def dissonanceMoyenne(self):
+        return self.repartitionTotale / 360
