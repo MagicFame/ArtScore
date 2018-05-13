@@ -11,7 +11,7 @@ Points à avancer :
  - Analyse en masse (1000 morceaux classiques) : Fait
  - Détermination des caractéristiques de chaque style : Fait
  - Création de morceaux en semi random : Fait (changement dissonance à faire)
- - Création de morceaux chaine de markov : A réaliser
+ - Création de morceaux chaine de markov : Fait
  - Implémentations des parties - Organisation du morceau : A réaliser
  - Implémentation du système de rating : A réaliser
  
