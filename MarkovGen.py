@@ -1,6 +1,7 @@
 from EasyMIDI import EasyMIDI, Track, Note
 import numpy as np
 from random import randrange
+import os
 from Gamme import Gamme
 class MarkovGen:
     ### Definition des notes
@@ -68,12 +69,10 @@ class MarkovGen:
     markov = []  # tableau de markov
 
     def __init__(self, genre, markov1):
-        print(markov1[0])
         for i in range(36):
             self.markov.append([0] * 36)
         self.markov = markov1[:]
         gamme = genre.chooseGenre()
-        print (self.markov[0])
         self.generate(gamme)
 
     def generate(self, gamme):
@@ -107,9 +106,9 @@ class MarkovGen:
         for i in range(36):
             for j in range(36):
                 total += self.markov[i][j]
-            for j in range(36):
-                self.markov[i][j] = self.markov[i][j]/total
-
+            for x in range(36):
+                self.markov[i][x] = self.markov[i][x]/total
+            total = 0
         for i in range(36):
             print(i, "|", self.markov[i])
 
@@ -252,81 +251,124 @@ class MarkovGen:
         taillemorceau = randrange(100, 200)
         counter = 0
         # on se base sur la premiere note pour generer les suivantes :
-        while taillemorceau < counter:
-            notesuivante = np.random.choice(36, 1, p=self.markov[noteactuelle])
-            if notesuivante == 0:
+        while taillemorceau > counter:
+            tab = np.array(self.markov[noteactuelle])
+            notesuivantetab = np.random.choice(36, 1, p = tab)
+            notesuivante = int(notesuivantetab[0])
+            if notesuivante == 0 and "Do" in notes:
                 track1.addNote(self.c2)
-            if notesuivante == 1:
+                counter += 1
+            if notesuivante == 1 and "Dod" in notes:
                 track1.addNote(self.c2d)
-            if notesuivante == 2:
+                counter += 1
+            if notesuivante == 2 and "Re" in notes:
                 track1.addNote(self.d2)
-            if notesuivante == 3:
+                counter += 1
+            if notesuivante == 3 and "Red" in notes:
                 track1.addNote(self.d2d)
-            if notesuivante == 4:
+                counter += 1
+            if notesuivante == 4 and "Mi" in notes:
                 track1.addNote(self.e2)
-            if notesuivante == 5:
+                counter += 1
+            if notesuivante == 5 and "Fa" in notes:
                 track1.addNote(self.f2)
-            if notesuivante == 6:
+                counter += 1
+            if notesuivante == 6 and "Fad" in notes:
                 track1.addNote(self.f2d)
-            if notesuivante == 7:
+                counter += 1
+            if notesuivante == 7 and "Sol" in notes:
                 track1.addNote(self.g2)
-            if notesuivante == 8:
+                counter += 1
+            if notesuivante == 8 and "Sold" in notes:
                 track1.addNote(self.g2d)
-            if notesuivante == 9:
+                counter += 1
+            if notesuivante == 9 and "La" in notes:
                 track1.addNote(self.a2)
-            if notesuivante == 10:
+                counter += 1
+            if notesuivante == 10 and "Lad" in notes:
                 track1.addNote(self.a2d)
-            if notesuivante == 11:
+                counter += 1
+            if notesuivante == 11 and "Si" in notes:
                 track1.addNote(self.b2)
-            if notesuivante == 12:
+                counter += 1
+            if notesuivante == 12 and "Do" in notes:
                 track1.addNote(self.c3)
-            if notesuivante == 13:
+                counter += 1
+            if notesuivante == 13 and "Dod" in notes:
                 track1.addNote(self.c3d)
-            if notesuivante == 14:
+                counter += 1
+            if notesuivante == 14 and "Re" in notes:
                 track1.addNote(self.d3)
-            if notesuivante == 15:
+                counter += 1
+            if notesuivante == 15 and "Red" in notes:
                 track1.addNote(self.d3d)
-            if notesuivante == 16:
+                counter += 1
+            if notesuivante == 16 and "Mi" in notes:
                 track1.addNote(self.e3)
-            if notesuivante == 17:
+                counter += 1
+            if notesuivante == 17 and "Fa" in notes:
                 track1.addNote(self.f3)
-            if notesuivante == 18:
+                counter += 1
+            if notesuivante == 18 and "Fad" in notes:
                 track1.addNote(self.f3d)
-            if notesuivante == 19:
+                counter += 1
+            if notesuivante == 19 and "Sol" in notes:
                 track1.addNote(self.g3)
-            if notesuivante == 20:
+                counter += 1
+            if notesuivante == 20 and "Sold" in notes:
                 track1.addNote(self.g3d)
-            if notesuivante == 21:
+                counter += 1
+            if notesuivante == 21 and "La" in notes:
                 track1.addNote(self.a3)
-            if notesuivante == 22:
+                counter += 1
+            if notesuivante == 22 and "Lad" in notes:
                 track1.addNote(self.a3d)
-            if notesuivante == 23:
+                counter += 1
+            if notesuivante == 23 and "Si" in notes:
                 track1.addNote(self.b3)
-            if notesuivante == 24:
+                counter += 1
+            if notesuivante == 24 and "Do" in notes:
                 track1.addNote(self.c4)
-            if notesuivante == 25:
+                counter += 1
+            if notesuivante == 25 and "Dod" in notes:
                 track1.addNote(self.c4d)
-            if notesuivante == 26:
+                counter += 1
+            if notesuivante == 26 and "Re" in notes:
                 track1.addNote(self.d4)
-            if notesuivante == 27:
+                counter += 1
+            if notesuivante == 27 and "Red" in notes:
                 track1.addNote(self.d4d)
-            if notesuivante == 28:
+                counter += 1
+            if notesuivante == 28 and "Mi" in notes:
                 track1.addNote(self.e4)
-            if notesuivante == 29:
+                counter += 1
+            if notesuivante == 29 and "Fa" in notes:
                 track1.addNote(self.f4)
-            if notesuivante == 30:
+                counter += 1
+            if notesuivante == 30 and "Fad" in notes:
                 track1.addNote(self.f4d)
-            if notesuivante == 31:
+                counter += 1
+            if notesuivante == 31 and "Sol" in notes:
                 track1.addNote(self.g4)
-            if notesuivante == 32:
+                counter += 1
+            if notesuivante == 32 and "Sold" in notes:
                 track1.addNote(self.g4d)
-            if notesuivante == 33:
+                counter += 1
+            if notesuivante == 33 and "La" in notes:
                 track1.addNote(self.a4)
-            if notesuivante == 34:
+                counter += 1
+            if notesuivante == 34 and "Lad" in notes:
                 track1.addNote(self.a4d)
-            if notesuivante == 35:
+                counter += 1
+            if notesuivante == 35 and "Si" in notes:
                 track1.addNote(self.b4)
+                counter += 1
             noteactuelle = notesuivante
+
+        try:
+            os.remove("markov.mid")
+        except:
+            print("N'existe pas encore")
         easyMIDI.addTrack(track1)
         easyMIDI.writeMIDI("markov.mid")
         print("Song créé avec succès")

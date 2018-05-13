@@ -1,7 +1,7 @@
 from Gamme import Gamme
 from mido import Message, MidiFile, MidiTrack
 from EasyMIDI import EasyMIDI, Track, Note, Chord, RomanChord
-
+import os
 
 class AleatoireGen:
     ### Definition des notes
@@ -299,9 +299,12 @@ class AleatoireGen:
                     if hauteur == 3:
                         track1.addNote(self.b4)
             counter = counter + 1
-            #print(counter)
+            # print(counter)
         print("Dissonnance du morceau créé : ", dissonnanceactuelle)
-
+        try:
+            os.remove("random.mid")
+        except:
+            print("N'existe pas encore")
         easyMIDI.addTrack(track1)
-        easyMIDI.writeMIDI("output.mid")
+        easyMIDI.writeMIDI("random.mid")
         print("Song créé avec succès")

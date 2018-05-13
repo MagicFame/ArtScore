@@ -9,5 +9,3 @@ class Gamme:
         return self.nom
     def getNotes(self): #Retourne les notes de la gamme
         return self.notes
-
-

@@ -9,7 +9,7 @@ from tkinter import *
 from AleatoireGen import AleatoireGen
 from Genre import Genre
 from MarkovGen import MarkovGen
-
+import pygame
 def trier(liste):  # Algorithme de tri afin d'avoir les notes de la gamme trié par ordre de Do à Si
     gamme = []
     if "Do" in liste:
@@ -346,7 +346,22 @@ def detectMarkov():
         if 48 <= int(notes[cpt]) <= 83 and 48 <= int(notes[cpt + 1]) <= 83 and notes[cpt] != notes[cpt+1]:  # notes faisant partie de la création
             markov[int(notes[cpt]) - 48][int(notes[cpt + 1]) - 48] += 1
 
-
+def play_music(music_file):
+    """
+    stream music with mixer.music module in blocking manner
+    this will stream the sound from disk while playing
+    """
+    clock = pygame.time.Clock()
+    try:
+        pygame.mixer.music.load(music_file)
+        print ("Music file %s loaded!" % music_file)
+    except pygame.error:
+        print ("File %s not found! (%s)" % (music_file, pygame.get_error()))
+        return
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():
+        # check if playback has finished
+        clock.tick(30)
 methodeGeneree = "Aucune"
 
 def generer(methode):
@@ -357,11 +372,12 @@ def generer(methode):
     # ---> A PARTIR D'ICI VA VERS algo de generation en fonction de la methode
     if methodeGeneree == "aleatoire":
         Generation = AleatoireGen(classique)
-
+        pygame.mixer.music.load("random.mid")
+        pygame.mixer.music.play()
     elif methodeGeneree == "markov":
         Markov = MarkovGen(classique, markov)
-
-
+        pygame.mixer.music.load("markov.mid")
+        pygame.mixer.music.play()
 def noter():
     valider.config(state=DISABLED)
     # pour chaque génération on ne peut donner qu'une seule note
@@ -420,6 +436,7 @@ for compt in range(1, 360):
 classique.afficherInfoGenre()
 for i in range(36):
     print(i, "|", markov[i])
+pygame.init()
 
 
 
@@ -446,8 +463,6 @@ Label(bottom, text="Organisation du morceau :").pack(pady=5)
 orga_s.pack()
 valider = Button(bottom, text='Valider', command=noter, padx=10, pady=5)
 valider.pack(padx=50, pady=20)
-
-
 fenetre.mainloop()
 
 
