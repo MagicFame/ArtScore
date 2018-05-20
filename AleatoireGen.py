@@ -1,81 +1,86 @@
-from Gamme import Gamme
-from mido import Message, MidiFile, MidiTrack
-from EasyMIDI import EasyMIDI, Track, Note, Chord, RomanChord
 import os
+from random import randrange
+
+from EasyMIDI import EasyMIDI, Track, Note
+
+from Gamme import Gamme
+
 
 class AleatoireGen:
-    ### Definition des notes
 
-    c2 = Note('C', octave=3, duration=1 / 4, volume=100)  # DO2
-    c2d = Note('C#', octave=3, duration=1 / 4, volume=100)
-    d2 = Note('D', octave=3, duration=1 / 4, volume=100)
-    d2d = Note('D#', octave=3, duration=1 / 4, volume=100)
-    e2 = Note('E', octave=3, duration=1 / 4, volume=100)
-    f2 = Note('F', octave=3, duration=1 / 4, volume=100)
-    f2d = Note('F#', octave=3, duration=1 / 4, volume=100)
-    g2 = Note('G', octave=3, duration=1 / 4, volume=100)
-    g2d = Note('G#', octave=3, duration=1 / 4, volume=100)
-    a2 = Note('A', octave=3, duration=1 / 4, volume=100)
-    a2d = Note('A#', octave=3, duration=1 / 4, volume=100)
-    b2 = Note('B', octave=3, duration=1 / 4, volume=100)
-    c3 = Note('C', octave=4, duration=1 / 4, volume=100)  # DO3
-    c3d = Note('C#', octave=4, duration=1 / 4, volume=100)
-    d3 = Note('D', octave=4, duration=1 / 4, volume=100)
-    d3d = Note('D#', octave=4, duration=1 / 4, volume=100)
-    e3 = Note('E', octave=4, duration=1 / 4, volume=100)
-    f3 = Note('F', octave=4, duration=1 / 4, volume=100)
-    f3d = Note('F#', octave=4, duration=1 / 4, volume=100)
-    g3 = Note('G', octave=4, duration=1 / 4, volume=100)
-    g3d = Note('G#', octave=4, duration=1 / 4, volume=100)
-    a3 = Note('A', octave=4, duration=1 / 4, volume=100)
-    a3d = Note('A#', octave=4, duration=1 / 4, volume=100)
-    b3 = Note('B', octave=4, duration=1 / 4, volume=100)
-    c4 = Note('C', octave=5, duration=1 / 4, volume=100)  # DO4
-    c4d = Note('C#', octave=5, duration=1 / 4, volume=100)
-    d4 = Note('D', octave=5, duration=1 / 4, volume=100)
-    d4d = Note('D#', octave=5, duration=1 / 4, volume=100)
-    e4 = Note('E', octave=5, duration=1 / 4, volume=100)
-    f4 = Note('F', octave=5, duration=1 / 4, volume=100)
-    f4d = Note('F#', octave=5, duration=1 / 4, volume=100)
-    g4 = Note('G', octave=5, duration=1 / 4, volume=100)
-    g4d = Note('G#', octave=5, duration=1 / 4, volume=100)
-    a4 = Note('A', octave=5, duration=1 / 4, volume=100)
-    a4d = Note('A#', octave=5, duration=1 / 4, volume=100)
-    b4 = Note('B', octave=5, duration=1 / 4, volume=100)
-    ### Definition des gammes
-    doma = Gamme('Do majeur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'])
-    lami = Gamme('La mineur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'])
-    solma = Gamme('Sol majeur', ['Do', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
-    mimi = Gamme('Mi mineur', ['Do', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
-    rema = Gamme('Re majeur', ['Dod', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
-    simi = Gamme('Si mineur', ['Dod', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
-    lama = Gamme('La majeur', ['Dod', 'Re', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
-    fadmi = Gamme('Fad mineur', ['Dod', 'Re', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
-    mima = Gamme('Mi majeur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
-    dodmi = Gamme('Dod mineur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
-    sima = Gamme('Si majeur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'Lad', 'Si'])
-    soldmi = Gamme('Sold mineur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'Lad', 'Si'])
-    fadma = Gamme('Fad majeur', ['Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad', 'Si'])
-    redmi = Gamme('Red mineur', ['Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad', 'Si'])
-    dodma = Gamme('Dod majeur', ['Do', 'Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad'])
-    ladmi = Gamme('Lad mineur', ['Do', 'Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad'])
-    fama = Gamme('Fa majeur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Lad'])
-    remi = Gamme('Re mineur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Lad'])
-    ladma = Gamme('Lad majeur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'La', 'Lad'])
-    solmi = Gamme('Sol mineur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'La', 'Lad'])
-    redma = Gamme('Red majeur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
-    domi = Gamme('Do mineur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
-    soldma = Gamme('Sold majeur', ['Do', 'Dod', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
-    fami = Gamme('Fa mineur', ['Do', 'Dod', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
-
-    dissonnance = 0
-
+    # Constructeur
     def __init__(self, genre):
+        ### Definition des notes
+
+        self.c2 = Note('C', octave=3, duration=1 / 4, volume=100)  # DO2
+        self.c2d = Note('C#', octave=3, duration=1 / 4, volume=100)
+        self.d2 = Note('D', octave=3, duration=1 / 4, volume=100)
+        self.d2d = Note('D#', octave=3, duration=1 / 4, volume=100)
+        self.e2 = Note('E', octave=3, duration=1 / 4, volume=100)
+        self.f2 = Note('F', octave=3, duration=1 / 4, volume=100)
+        self.f2d = Note('F#', octave=3, duration=1 / 4, volume=100)
+        self.g2 = Note('G', octave=3, duration=1 / 4, volume=100)
+        self.g2d = Note('G#', octave=3, duration=1 / 4, volume=100)
+        self.a2 = Note('A', octave=3, duration=1 / 4, volume=100)
+        self.a2d = Note('A#', octave=3, duration=1 / 4, volume=100)
+        self.b2 = Note('B', octave=3, duration=1 / 4, volume=100)
+        self.c3 = Note('C', octave=4, duration=1 / 4, volume=100)  # DO3
+        self.c3d = Note('C#', octave=4, duration=1 / 4, volume=100)
+        self.d3 = Note('D', octave=4, duration=1 / 4, volume=100)
+        self.d3d = Note('D#', octave=4, duration=1 / 4, volume=100)
+        self.e3 = Note('E', octave=4, duration=1 / 4, volume=100)
+        self.f3 = Note('F', octave=4, duration=1 / 4, volume=100)
+        self.f3d = Note('F#', octave=4, duration=1 / 4, volume=100)
+        self.g3 = Note('G', octave=4, duration=1 / 4, volume=100)
+        self.g3d = Note('G#', octave=4, duration=1 / 4, volume=100)
+        self.a3 = Note('A', octave=4, duration=1 / 4, volume=100)
+        self.a3d = Note('A#', octave=4, duration=1 / 4, volume=100)
+        self.b3 = Note('B', octave=4, duration=1 / 4, volume=100)
+        self.c4 = Note('C', octave=5, duration=1 / 4, volume=100)  # DO4
+        self.c4d = Note('C#', octave=5, duration=1 / 4, volume=100)
+        self.d4 = Note('D', octave=5, duration=1 / 4, volume=100)
+        self.d4d = Note('D#', octave=5, duration=1 / 4, volume=100)
+        self.e4 = Note('E', octave=5, duration=1 / 4, volume=100)
+        self.f4 = Note('F', octave=5, duration=1 / 4, volume=100)
+        self.f4d = Note('F#', octave=5, duration=1 / 4, volume=100)
+        self.g4 = Note('G', octave=5, duration=1 / 4, volume=100)
+        self.g4d = Note('G#', octave=5, duration=1 / 4, volume=100)
+        self.a4 = Note('A', octave=5, duration=1 / 4, volume=100)
+        self.a4d = Note('A#', octave=5, duration=1 / 4, volume=100)
+        self.b4 = Note('B', octave=5, duration=1 / 4, volume=100)
+        ### Definition des gammes
+        self.doma = Gamme('Do majeur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'])
+        self.lami = Gamme('La mineur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Si'])
+        self.solma = Gamme('Sol majeur', ['Do', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
+        self.mimi = Gamme('Mi mineur', ['Do', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
+        self.rema = Gamme('Re majeur', ['Dod', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
+        self.simi = Gamme('Si mineur', ['Dod', 'Re', 'Mi', 'Fad', 'Sol', 'La', 'Si'])
+        self.lama = Gamme('La majeur', ['Dod', 'Re', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
+        self.fadmi = Gamme('Fad mineur', ['Dod', 'Re', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
+        self.mima = Gamme('Mi majeur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
+        self.dodmi = Gamme('Dod mineur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'La', 'Si'])
+        self.sima = Gamme('Si majeur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'Lad', 'Si'])
+        self.soldmi = Gamme('Sold mineur', ['Dod', 'Red', 'Mi', 'Fad', 'Sold', 'Lad', 'Si'])
+        self.fadma = Gamme('Fad majeur', ['Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad', 'Si'])
+        self.redmi = Gamme('Red mineur', ['Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad', 'Si'])
+        self.dodma = Gamme('Dod majeur', ['Do', 'Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad'])
+        self.ladmi = Gamme('Lad mineur', ['Do', 'Dod', 'Red', 'Fa', 'Fad', 'Sold', 'Lad'])
+        self.fama = Gamme('Fa majeur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Lad'])
+        self.remi = Gamme('Re mineur', ['Do', 'Re', 'Mi', 'Fa', 'Sol', 'La', 'Lad'])
+        self.ladma = Gamme('Lad majeur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'La', 'Lad'])
+        self.solmi = Gamme('Sol mineur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'La', 'Lad'])
+        self.redma = Gamme('Red majeur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
+        self.domi = Gamme('Do mineur', ['Do', 'Re', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
+        self.soldma = Gamme('Sold majeur', ['Do', 'Dod', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
+        self.fami = Gamme('Fa mineur', ['Do', 'Dod', 'Red', 'Fa', 'Sol', 'Sold', 'Lad'])
+
+        self.dissonnance = 0
         gamme = genre.chooseGenre()
         print(gamme)
         dissonnance = genre.dissonanceMoyenne() - 10
         self.generate(gamme, dissonnance)
 
+    # Generation musique
     def generate(self, gamme, dissonnance):
         notes = []
         if gamme == "Do majeur" or gamme == "La mineur":
@@ -103,7 +108,6 @@ class AleatoireGen:
         if gamme == "Sol# majeur" or gamme == "Fa mineur":
             notes = list(self.soldma.getNotes())
 
-        from random import randrange
         counter = 0
         # definition longueur morceau (100 à 200 notes)
         taillemorceau = randrange(100, 200)
@@ -113,194 +117,145 @@ class AleatoireGen:
         track1 = Track("acoustic grand piano")  # oops
 
         while counter < taillemorceau:
-            if dissonnanceactuelle >= dissonnance:  # On ajoute une note de la gamme
-                notesrandom = randrange(0, 7)
-                if notes[notesrandom] == "Do":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.c2)
-                    if hauteur == 2:
-                        track1.addNote(self.c3)
-                    if hauteur == 3:
-                        track1.addNote(self.c4)
-                if notes[notesrandom] == "Dod":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.c2d)
-                    if hauteur == 2:
-                        track1.addNote(self.c3d)
-                    if hauteur == 3:
-                        track1.addNote(self.c4d)
-                if notes[notesrandom] == "Re":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.d2)
-                    if hauteur == 2:
-                        track1.addNote(self.d3)
-                    if hauteur == 3:
-                        track1.addNote(self.d4)
-                if notes[notesrandom] == "Red":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.d2d)
-                    if hauteur == 2:
-                        track1.addNote(self.d3d)
-                    if hauteur == 3:
-                        track1.addNote(self.d4d)
-                if notes[notesrandom] == "Mi":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.e2)
-                    if hauteur == 2:
-                        track1.addNote(self.e3)
-                    if hauteur == 3:
-                        track1.addNote(self.e4)
-                if notes[notesrandom] == "Fa":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.f2)
-                    if hauteur == 2:
-                        track1.addNote(self.f3)
-                    if hauteur == 3:
-                        track1.addNote(self.f4)
-                if notes[notesrandom] == "Fad":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.f2d)
-                    if hauteur == 2:
-                        track1.addNote(self.f3d)
-                    if hauteur == 3:
-                        track1.addNote(self.f4d)
-                if notes[notesrandom] == "Sol":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.g2)
-                    if hauteur == 2:
-                        track1.addNote(self.g3)
-                    if hauteur == 3:
-                        track1.addNote(self.g4)
-                if notes[notesrandom] == "Sold":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.g2d)
-                    if hauteur == 2:
-                        track1.addNote(self.g3d)
-                    if hauteur == 3:
-                        track1.addNote(self.g4d)
-                if notes[notesrandom] == "La":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.a2)
-                    if hauteur == 2:
-                        track1.addNote(self.a3)
-                    if hauteur == 3:
-                        track1.addNote(self.a4)
-                if notes[notesrandom] == "Lad":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.a2d)
-                    if hauteur == 2:
-                        track1.addNote(self.a3d)
-                    if hauteur == 3:
-                        track1.addNote(self.a4d)
-                if notes[notesrandom] == "Si":
-                    hauteur = randrange(1, 4)
-                    if hauteur == 1:
-                        track1.addNote(self.b2)
-                    if hauteur == 2:
-                        track1.addNote(self.b3)
-                    if hauteur == 3:
-                        track1.addNote(self.b4)
-            else:  # on ajoute une note random
-                notesrandom = randrange(1, 13)
+            # On ajoute une note de la gamme
+            notesrandom = randrange(0, 7)
+            tempsrandom = randrange(0, 5)
+            temps = [1, 1 / 2, 1 / 4, 1 / 8, 1 / 16]
+            if notes[notesrandom] == "Do":
                 hauteur = randrange(1, 4)
-                if notesrandom == 1:
-                    if hauteur == 1:
-                        track1.addNote(self.c2)
-                    if hauteur == 2:
-                        track1.addNote(self.c3)
-                    if hauteur == 3:
-                        track1.addNote(self.c4)
-                if notesrandom == 2:
-                    if hauteur == 1:
-                        track1.addNote(self.c2d)
-                    if hauteur == 2:
-                        track1.addNote(self.c3d)
-                    if hauteur == 3:
-                        track1.addNote(self.c4d)
-                if notesrandom == 3:
-                    if hauteur == 1:
-                        track1.addNote(self.d2)
-                    if hauteur == 2:
-                        track1.addNote(self.d3)
-                    if hauteur == 3:
-                        track1.addNote(self.d4)
-                if notesrandom == 4:
-                    if hauteur == 1:
-                        track1.addNote(self.d2d)
-                    if hauteur == 2:
-                        track1.addNote(self.d3d)
-                    if hauteur == 3:
-                        track1.addNote(self.d4d)
-                if notesrandom == 5:
-                    if hauteur == 1:
-                        track1.addNote(self.e2)
-                    if hauteur == 2:
-                        track1.addNote(self.e3)
-                    if hauteur == 3:
-                        track1.addNote(self.e4)
-                if notesrandom == 6:
-                    if hauteur == 1:
-                        track1.addNote(self.f2)
-                    if hauteur == 2:
-                        track1.addNote(self.f3)
-                    if hauteur == 3:
-                        track1.addNote(self.f4)
-                if notesrandom == 7:
-                    if hauteur == 1:
-                        track1.addNote(self.f2d)
-                    if hauteur == 2:
-                        track1.addNote(self.f3d)
-                    if hauteur == 3:
-                        track1.addNote(self.f4d)
-                if notesrandom == 8:
-                    if hauteur == 1:
-                        track1.addNote(self.g2)
-                    if hauteur == 2:
-                        track1.addNote(self.g3)
-                    if hauteur == 3:
-                        track1.addNote(self.g4)
-                if notesrandom == 9:
-                    if hauteur == 1:
-                        track1.addNote(self.g2d)
-                    if hauteur == 2:
-                        track1.addNote(self.g3d)
-                    if hauteur == 3:
-                        track1.addNote(self.g4d)
-                if notesrandom == 10:
-                    if hauteur == 1:
-                        track1.addNote(self.a2)
-                    if hauteur == 2:
-                        track1.addNote(self.a3)
-                    if hauteur == 3:
-                        track1.addNote(self.a4)
-                if notesrandom == 11:
-                    if hauteur == 1:
-                        track1.addNote(self.a2d)
-                    if hauteur == 2:
-                        track1.addNote(self.a3d)
-                    if hauteur == 3:
-                        track1.addNote(self.a4d)
-                if notesrandom == 12:
-                    if hauteur == 1:
-                        track1.addNote(self.b2)
-                    if hauteur == 2:
-                        track1.addNote(self.b3)
-                    if hauteur == 3:
-                        track1.addNote(self.b4)
+                if hauteur == 1:
+                    self.c2.setDuration(temps[tempsrandom])
+                    track1.addNote(self.c2)
+                if hauteur == 2:
+                    self.c3.setDuration(temps[tempsrandom])
+                    track1.addNote(self.c3)
+                if hauteur == 3:
+                    self.c4.setDuration(temps[tempsrandom])
+                    track1.addNote(self.c4)
+            if notes[notesrandom] == "Dod":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.c2d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.c2d)
+                if hauteur == 2:
+                    self.c3d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.c3d)
+                if hauteur == 3:
+                    self.c4d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.c4d)
+            if notes[notesrandom] == "Re":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.d2.setDuration(temps[tempsrandom])
+                    track1.addNote(self.d2)
+                if hauteur == 2:
+                    self.d3.setDuration(temps[tempsrandom])
+                    track1.addNote(self.d3)
+                if hauteur == 3:
+                    self.d4.setDuration(temps[tempsrandom])
+                    track1.addNote(self.d4)
+            if notes[notesrandom] == "Red":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.d2d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.d2d)
+                if hauteur == 2:
+                    self.d3d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.d3d)
+                if hauteur == 3:
+                    self.d4d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.d4d)
+            if notes[notesrandom] == "Mi":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.e2.setDuration(temps[tempsrandom])
+                    track1.addNote(self.e2)
+                if hauteur == 2:
+                    self.e3.setDuration(temps[tempsrandom])
+                    track1.addNote(self.e3)
+                if hauteur == 3:
+                    self.e4.setDuration(temps[tempsrandom])
+                    track1.addNote(self.e4)
+            if notes[notesrandom] == "Fa":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.f2.setDuration(temps[tempsrandom])
+                    track1.addNote(self.f2)
+                if hauteur == 2:
+                    self.f3.setDuration(temps[tempsrandom])
+                    track1.addNote(self.f3)
+                if hauteur == 3:
+                    self.f4.setDuration(temps[tempsrandom])
+                    track1.addNote(self.f4)
+            if notes[notesrandom] == "Fad":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.f2d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.f2d)
+                if hauteur == 2:
+                    self.f3d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.f3d)
+                if hauteur == 3:
+                    self.f4d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.f4d)
+            if notes[notesrandom] == "Sol":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.g2.setDuration(temps[tempsrandom])
+                    track1.addNote(self.g2)
+                if hauteur == 2:
+                    self.g3.setDuration(temps[tempsrandom])
+                    track1.addNote(self.g3)
+                if hauteur == 3:
+                    self.g4.setDuration(temps[tempsrandom])
+                    track1.addNote(self.g4)
+            if notes[notesrandom] == "Sold":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.g2d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.g2d)
+                if hauteur == 2:
+                    self.g3d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.g3d)
+                if hauteur == 3:
+                    self.g4d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.g4d)
+            if notes[notesrandom] == "La":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.a2.setDuration(temps[tempsrandom])
+                    track1.addNote(self.a2)
+                if hauteur == 2:
+                    self.a3.setDuration(temps[tempsrandom])
+                    track1.addNote(self.a3)
+                if hauteur == 3:
+                    self.a4.setDuration(temps[tempsrandom])
+                    track1.addNote(self.a4)
+            if notes[notesrandom] == "Lad":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.a2d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.a2d)
+                if hauteur == 2:
+                    self.a3d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.a3d)
+                if hauteur == 3:
+                    self.a4d.setDuration(temps[tempsrandom])
+                    track1.addNote(self.a4d)
+            if notes[notesrandom] == "Si":
+                hauteur = randrange(1, 4)
+                if hauteur == 1:
+                    self.b2.setDuration(temps[tempsrandom])
+                    track1.addNote(self.b2)
+                if hauteur == 2:
+                    self.b3.setDuration(temps[tempsrandom])
+                    track1.addNote(self.b3)
+                if hauteur == 3:
+                    self.b4.setDuration(temps[tempsrandom])
+                    track1.addNote(self.b4)
+
             counter = counter + 1
-            # print(counter)
-        print("Dissonnance du morceau créé : ", dissonnanceactuelle)
+        print("Dissonnance du morceau créé : ", dissonnanceactuelle / 8)
         try:
             os.remove("random.mid")
         except:

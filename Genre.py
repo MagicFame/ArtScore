@@ -1,37 +1,42 @@
-class Genre:  # def
-    repartitionDoMajeur = 0
-    repartitionDoMineur = 0
-    repartitionLaMineur = 0
-    repartitionSolMajeur = 0
-    repartitionMiMineur = 0
-    repartitionReMajeur = 0
-    repartitionSiMineur = 0
-    repartitionLaMajeur = 0
-    repartitionFaDMineur = 0
-    repartitionMiMajeur = 0
-    repartitionDoDMineur = 0
-    repartitionSiMajeur = 0
-    repartitionSolDMineur = 0
-    repartitionFaDMajeur = 0
-    repartitionReDMineur = 0
-    repartitionDoDMajeur = 0
-    repartitionLaDMineur = 0
-    repartitionFaMajeur = 0
-    repartitionReMineur = 0
-    repartitionLaDMajeur = 0
-    repartitionSolMineur = 0
-    repartitionReDMajeur = 0
-    repartitionSolDMajeur = 0
-    repartitionFaMineur = 0
+from random import randrange
 
-    dissonnaceTotale = 0
-    repartitionTotale = 0
 
-    def __init__(self, nom):  # constructeur
+class Genre:
+
+    # constructeur
+    def __init__(self, nom):
+        self.repartitionDoMajeur = 0
+        self.repartitionDoMineur = 0
+        self.repartitionLaMineur = 0
+        self.repartitionSolMajeur = 0
+        self.repartitionMiMineur = 0
+        self.repartitionReMajeur = 0
+        self.repartitionSiMineur = 0
+        self.repartitionLaMajeur = 0
+        self.repartitionFaDMineur = 0
+        self.repartitionMiMajeur = 0
+        self.repartitionDoDMineur = 0
+        self.repartitionSiMajeur = 0
+        self.repartitionSolDMineur = 0
+        self.repartitionFaDMajeur = 0
+        self.repartitionReDMineur = 0
+        self.repartitionDoDMajeur = 0
+        self.repartitionLaDMineur = 0
+        self.repartitionFaMajeur = 0
+        self.repartitionReMineur = 0
+        self.repartitionLaDMajeur = 0
+        self.repartitionSolMineur = 0
+        self.repartitionReDMajeur = 0
+        self.repartitionSolDMajeur = 0
+        self.repartitionFaMineur = 0
+
+        self.dissonnanceTotale = 0
+        self.repartitionTotale = 0
         self.nom = nom
         self.notes = []
         self.gam = ""
 
+    # Calcul du nombre d'occurence d'une gamme pour un genre donné
     def addGamme(self, nom):
         if nom == "Do majeur":
             self.repartitionDoMajeur = self.repartitionDoMajeur + 1
@@ -82,14 +87,17 @@ class Genre:  # def
         if nom == "Fa mineur":
             self.repartitionFaMineur = self.repartitionFaMineur + 1
 
+    # Calcul de la dissonnance totale pour un genre donné
     def addDissonance(self, value):
-        self.dissonnaceTotale += value
+        self.dissonnanceTotale += value
 
+    # Calcul de la répartition pour un genre (Note la plus élevée - la plus basse)
     def addRepartition(self, value):
         self.repartitionTotale += value
 
+    # Affichage des caracteristiques propres à un genre
     def afficherInfoGenre(self):
-        print("\n \n \n \nStyle selectionné : Classique")
+        print("\n \n \n***************************** \nStyle selectionné : Classique")
         print("Gamme répartition Do majeur : ", self.repartitionDoMajeur, "Do mineur : ", self.repartitionDoMineur,
               "La mineur: ", self.repartitionLaMineur, "Sol majeur: ", self.repartitionSolMajeur, "Mi mineur:",
               self.repartitionMiMineur, "Re majeur : ", self.repartitionReMajeur, "Si mineur", self.repartitionSiMineur,
@@ -102,35 +110,48 @@ class Genre:  # def
               self.repartitionReMineur, "La# majeur", self.repartitionLaDMajeur,
               "Sol mineur : ", self.repartitionSolMineur, "Re# majeur", self.repartitionReDMajeur, "Sol# majeur",
               self.repartitionSolDMajeur, "Fa mineur", self.repartitionFaMineur)
-        print("\nDissonnance moyenne :", self.dissonnaceTotale / 360)
-        print("\nRepartition moyenne", self.repartitionTotale / 360)
+        print("\nDissonnance moyenne :", self.dissonnanceTotale / 360)
+        print("\nRepartition moyenne", self.repartitionTotale / 360, "\n\n***************************** \n\n")
 
-    def chooseGenre(self):  # A adapter par rapport aux pourcentages
-        total = self.repartitionDoMajeur + self.repartitionDoMineur + self.repartitionLaMineur + \
-                self.repartitionSolMajeur + self.repartitionMiMineur + self.repartitionReMajeur + \
-                self.repartitionSiMineur + self.repartitionLaMajeur + self.repartitionFaDMineur + \
-                self.repartitionMiMajeur + self.repartitionDoDMineur + self.repartitionSiMajeur + \
-                self.repartitionSolDMineur + self.repartitionFaDMajeur + self.repartitionReDMineur + \
-                self.repartitionDoDMajeur + self.repartitionLaDMineur + self.repartitionFaMajeur + \
-                self.repartitionReMineur + self.repartitionLaDMajeur + self.repartitionSolMineur + \
-                self.repartitionReDMajeur + self.repartitionSolDMajeur + self.repartitionFaMineur
-        from random import randrange
+    # Selectionne un genre en fonction des pourcentages
+    def chooseGenre(self):
+        gamme = []
+        repartition = [self.repartitionDoMajeur, self.repartitionDoMineur, self.repartitionLaMineur,
+                       self.repartitionSolMajeur, self.repartitionMiMineur, self.repartitionReMajeur,
+                       self.repartitionSiMineur, self.repartitionLaMajeur, self.repartitionFaDMineur,
+                       self.repartitionMiMajeur, self.repartitionDoDMineur, self.repartitionSiMajeur,
+                       self.repartitionSolDMineur, self.repartitionFaDMajeur, self.repartitionReDMineur,
+                       self.repartitionDoDMajeur, self.repartitionLaDMineur, self.repartitionFaMajeur,
+                       self.repartitionReMineur, self.repartitionLaDMajeur, self.repartitionSolMineur,
+                       self.repartitionReDMajeur, self.repartitionSolDMajeur, self.repartitionFaMineur]
+        nomgamme = ["Do majeur", "Do mineur", "La mineur", "Sol majeur", "Mi mineur", "Re majeur", "Si mineur",
+                    "La majeur", "Fa# mineur", "Mi majeur", "Do# mineur", "Si majeur", "Sol# mineur", "Fa# majeur",
+                    "Re# mineur", "Do# majeur", "La# mineur", "Fa majeur", "Re mineur", "La# majeur", "Sol mineur",
+                    "Re# majeur", "Sol# majeur", "Fa mineur"]
+        for i in range(0, 6):
+            value = repartition.index(max(repartition))
+            gamme.append(nomgamme[value])
+            del repartition[value]
+            del nomgamme[value]
+        print(gamme)
         nombreAleatoire = randrange(1, 7)
         if nombreAleatoire == 1:
-            return "Do majeur"
+            return gamme[0]
         if nombreAleatoire == 2:
-            return "Sol majeur"
+            return gamme[1]
         if nombreAleatoire == 3:
-            return "Re majeur"
+            return gamme[2]
         if nombreAleatoire == 4:
-            return "Fa majeur"
+            return gamme[3]
         if nombreAleatoire == 5:
-            return "La# majeur"
+            return gamme[4]
         if nombreAleatoire == 6:
-            return "Re# majeur"
+            return gamme[5]
 
+    # Calcul de la répartition moyenne
     def repartitionMoyenne(self):
-        return self.dissonnaceTotale / 360
+        return self.dissonnanceTotale / 360
 
+    # Calcul de la dissonnace moyenne
     def dissonanceMoyenne(self):
         return self.repartitionTotale / 360

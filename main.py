@@ -1,16 +1,18 @@
-import MarkovGen as MarkovGen
-from EasyMIDI import EasyMIDI, Track, Note, Chord, RomanChord
-from random import choice
-import mido
-from mido import MidiFile
-import Gamme
-from math import *
 from tkinter import *
+
+import pygame
+from mido import MidiFile
+
+import MarkovGen as MarkovGen
 from AleatoireGen import AleatoireGen
 from Genre import Genre
 from MarkovGen import MarkovGen
-import pygame
-def trier(liste):  # Algorithme de tri afin d'avoir les notes de la gamme trié par ordre de Do à Si
+
+
+# REGARDER LA DOC : https://mido.readthedocs.io/en/latest/index.html#
+
+# Algorithme de tri afin d'avoir les notes de la gamme trié par ordre de Do à Si
+def trier(liste):
     gamme = []
     if "Do" in liste:
         gamme.append("Do")
@@ -40,7 +42,8 @@ def trier(liste):  # Algorithme de tri afin d'avoir les notes de la gamme trié 
     return gamme
 
 
-def detectRepartition():  # Detecte la différence entre la plus haute note et la plus basse note
+# Detecte la différence entre la plus haute note et la plus basse note
+def detectRepartition():
     basse = int(notes[0])
     haute = int(notes[0])
     for n in notes:
@@ -53,7 +56,8 @@ def detectRepartition():  # Detecte la différence entre la plus haute note et l
     return haute - basse
 
 
-def detectGamme():  # Algorithme de détection de gamme basé sur les probabilitées.
+# Algorithme de détection de gamme basé sur les probabilitées : (Explication exacte sur Excel)
+def detectGamme():
     gamme = []
     comptdo = 0
     comptdod = 0
@@ -339,31 +343,19 @@ def detectGamme():  # Algorithme de détection de gamme basé sur les probabilit
     classique.addGamme(gamme)
     return gamme
 
+
+# Algorithme de création des tableaux de markov (tableau de probabilitées)
 def detectMarkov():
     cpt = 0
 
     for cpt in range(len(notes) - 1):
-        if 48 <= int(notes[cpt]) <= 83 and 48 <= int(notes[cpt + 1]) <= 83 and notes[cpt] != notes[cpt+1]:  # notes faisant partie de la création
+        if 48 <= int(notes[cpt]) <= 83 and 48 <= int(notes[cpt + 1]) <= 83 and notes[cpt] != notes[cpt + 1]:
+            # notes faisant partie de la création
             markov[int(notes[cpt]) - 48][int(notes[cpt + 1]) - 48] += 1
 
-def play_music(music_file):
-    """
-    stream music with mixer.music module in blocking manner
-    this will stream the sound from disk while playing
-    """
-    clock = pygame.time.Clock()
-    try:
-        pygame.mixer.music.load(music_file)
-        print ("Music file %s loaded!" % music_file)
-    except pygame.error:
-        print ("File %s not found! (%s)" % (music_file, pygame.get_error()))
-        return
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-        # check if playback has finished
-        clock.tick(30)
-methodeGeneree = "Aucune"
 
+# Fonction appel les algorithmes de génération en fonction de la méthode et qui lance la lecture
+# directement à la création
 def generer(methode):
     bottom.pack(padx=30, pady=30)
     valider.config(state=NORMAL)
@@ -375,45 +367,52 @@ def generer(methode):
         pygame.mixer.music.load("random.mid")
         pygame.mixer.music.play()
     elif methodeGeneree == "markov":
-        Markov = MarkovGen(classique, markov)
+        Markov = MarkovGen(classique, markov, markov2)
         pygame.mixer.music.load("markov.mid")
         pygame.mixer.music.play()
+
+
+# Fonction pour la notation à réaliser !!
 def noter():
     valider.config(state=DISABLED)
     # pour chaque génération on ne peut donner qu'une seule note
     print(methodeGeneree)
-    gamme = int(gamme_s.get())
-    rythme = int(rythme_s.get())
-    orga = int(orga_s.get())
-    print("Note sur la gamme " + str(gamme))
-    print("Note sur le rythme "+ str(rythme))
-    print("Note sur l'organisation du morceau " + str(orga))
-    # ---> A PARTIR D'ICI VA VERS attribution des notes en fonction de la méthodeGénérée
+    gammerate = int(gamme_s.get())
+    hauteur = int(hauteur_s.get())
+    rytme = int(rytme_s.get())
+    print("Note sur la gamme " + str(gammerate))
+    print("Note sur la différence de hauteur entre deux notes " + str(hauteur))
+    print("Note sur le rythme" + str(rytme))
 
-# fenêtre principale
+
+# définition de la fenêtre principale
 fenetre = Tk()
 fenetre.title("ArtScore")
 titre = Label(fenetre, text="ArtScore")
 titre.pack()
 
-
-easyMIDI = EasyMIDI()
-track1 = Track("acoustic grand piano")  # oops
-
-
+# définition des variables
+methodeGeneree = "Aucune"
+markov = []  # tableau de markov notes
 compt = 0
-
-markov = []  # tableau de markov
+markov2 = []  # tableau de markov temps
+# initialisation du vecteur 2d markov
 for i in range(36):
     markov.append([0] * 36)
-classique = Genre("Classique")
-for compt in range(1, 360):
 
+# création du genre Classique
+classique = Genre("Classique")
+
+# initialisation de pygame (lecture fichier midi sur app)
+pygame.init()
+
+# boucle permettant de parcourir les 360 morceaux classique avec affichage des informations pour chaque morceau
+for compt in range(1, 360):
     morceau = "n (" + str(compt) + ").mid"
     path = "Classique/" + morceau
+    # Possible d'essayer avec les morceaux Jazz mais penser à changer le path "Jazz/" et la boucle qui s'arrête à 52
     print("Morceau actuel :", path)
     mid = MidiFile(path)
-
     notes = []
     for i, track in enumerate(mid.tracks):
 
@@ -423,49 +422,39 @@ for compt in range(1, 360):
                 a, b, c, d, e = str(msg).split(" ")
                 g, note = str(c).split("=")
                 notes.append(note)
-
-    # REGARDER LA DOC : https://mido.readthedocs.io/en/latest/index.html#
-
-    # for i in notes:
-    #   print(i)
     detectMarkov()
     gamme = detectGamme()
     print("La différence entre la note la plus haute et la plus basse est :", detectRepartition())
-
-
+# Affichage console de toutes les informations propres au genre
 classique.afficherInfoGenre()
+
+# Affichage console du tableau de Markov
+print("CHAINE DE MARKOV (comptage)")
 for i in range(36):
     print(i, "|", markov[i])
-pygame.init()
 
-
-
-# cadre du haut (choix de la méthode)
+# affichage du cadre du haut (choix de la méthode)
 cadre = Frame(fenetre, width=768, height=576, borderwidth=2, relief=GROOVE)
 cadre.pack(padx=30, pady=30)
 label = Label(cadre, text="Méthodes de génération de musiques :")
 label.pack(padx=10, pady=10)
 Button(cadre, text='Aléatoire', command=lambda: generer('aleatoire'), padx=10, pady=5).pack(side=LEFT, padx=50, pady=20)
-Button(cadre, text='Chaînes de Markov', command=lambda: generer('markov'), padx=10, pady=5).pack(side=RIGHT, padx=50, pady=20)
+Button(cadre, text='Chaînes de Markov', command=lambda: generer('markov'), padx=10, pady=5).pack(side=RIGHT, padx=50,
+                                                                                                 pady=20)
 
-# cadre du bas (notes)
+# affichage du cadre du bas (Rating)
 bottom = Frame(fenetre, borderwidth=2, relief=GROOVE)
 labelbottom = Label(bottom, text="Écoutez le morceau puis donnez votre avis :")
 labelbottom.pack(padx=10, pady=10)
 gamme_s = Spinbox(bottom, from_=0, to=5)
 Label(bottom, text="Gamme :").pack(pady=5)
 gamme_s.pack()
-rythme_s = Spinbox(bottom, from_=0, to=5)
+hauteur_s = Spinbox(bottom, from_=0, to=5)
+Label(bottom, text="Différence de hauteur :").pack(pady=5)
+hauteur_s.pack()
+rytme_s = Spinbox(bottom, from_=0, to=5)
 Label(bottom, text="Rythmique :").pack(pady=5)
-rythme_s.pack()
-orga_s = Spinbox(bottom, from_=0, to=5)
-Label(bottom, text="Organisation du morceau :").pack(pady=5)
-orga_s.pack()
+rytme_s.pack()
 valider = Button(bottom, text='Valider', command=noter, padx=10, pady=5)
 valider.pack(padx=50, pady=20)
 fenetre.mainloop()
-
-
-
-
-
