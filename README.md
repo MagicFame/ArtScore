@@ -1,6 +1,6 @@
 # ArtScore
 
-Mis à jour le 20 / 5 / 2018
+Mis à jour le 20/5/2018
 
 Points à avancer :
 
