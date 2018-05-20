@@ -10,7 +10,7 @@ Points à avancer :
     - Pourcentage dissonances (notes différentes gamme) : Fait
     - Rythmique : Fait
     - Parties qui se répètent (Organisation du morceau)
- - Analyse en masse (1000 morceaux classiques) : Fait
+ - Analyse en masse (500 morceaux classiques) : Fait
  - Détermination des caractéristiques de chaque style : Fait
  - Création de morceaux en semi random : Fait
  - Création de morceaux chaine de markov : Fait
